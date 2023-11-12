@@ -11,5 +11,5 @@
 2. 發行套件
 
     ```sh
-    vsce publish -i codeoptimizer-0.1.1.vsix
+    vsce publish -i codeoptimizer-0.1.2.vsix
     ```

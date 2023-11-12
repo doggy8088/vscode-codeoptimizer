@@ -2,7 +2,7 @@
   "name": "codeoptimizer",
   "displayName": "程式碼優化大師",
   "description": "這個擴充套件會透過 ChatGPT 幫你分析程式碼品質並提供優化建議",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "preview": true,
   "publisher": "doggy8088",
   "icon": "icon.webp",

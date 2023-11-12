@@ -31,8 +31,6 @@ function SendToChatGPT(
   for (var x = 0; x < sel.length; x++) {
     let txt: string = d.getText(new vscode.Range(sel[x].start, sel[x].end));
 
-    const baseUrl = 'https://chat.openai.com/g/g-UEZYckKpa-cheng-shi-ma-you-hua-da-shi';
-
     let relativePath = getRelativePath();
 
     const workspaceName = vscode.workspace.name;
@@ -45,12 +43,40 @@ function SendToChatGPT(
 ${txt}
 """`;
 
+
     logger.appendLine(`prompt: ${prompt}`);
+    logger.appendLine('-------------------');
 
     let promptTextEncoded = encodeURIComponent(prompt);
+    logger.appendLine(`promptTextEncoded: ${promptTextEncoded}`);
+    logger.appendLine('-------------------');
+
+    // The Fragment part of the URL is the part after the # symbol and it will be percent-encoded
+    // https://stackoverflow.com/a/20681028/910074
+    let promptHash = `autoSubmit=1&prompt=${percentDecode(promptTextEncoded)}`;
+    logger.appendLine(`promptHash: ${promptHash}`);
+    logger.appendLine('-------------------');
+
+    const baseUrl = 'https://chat.openai.com/g/g-UEZYckKpa-cheng-shi-ma-you-hua-da-shi';
+
     let promptChatGPTURL = `${baseUrl}#autoSubmit=1&prompt=${promptTextEncoded}`;
 
-    vscode.env.openExternal(vscode.Uri.parse(promptChatGPTURL));
+    // @ts-ignore
+    // Issue: https://github.com/microsoft/vscode/issues/85930#issuecomment-821882174
+    vscode.env.openExternal(promptChatGPTURL);
+    // @ts-check
+
+    // 使用 vscode.Uri.parse() 會將 fragment 部分的 % 全部都轉成 %25，這樣就等於 Encode 了兩次！
+    // vscode.env.openExternal(vscode.Uri.parse(promptChatGPTURL));
+
+    // 使用 vscode.Uri.from() 會將 fragment 部分的 % 全部都轉成 %25，這樣就等於 Encode 了兩次！
+    // vscode.env.openExternal(vscode.Uri.from({
+    //   scheme: 'https',
+    //   authority: 'chat.openai.com',
+    //   path: '/g/g-UEZYckKpa-cheng-shi-ma-you-hua-da-shi',
+    //   query: '',
+    //   fragment: promptHash
+    // }));
 
     // switch (d.languageId) {
     //   case 'csharp':
@@ -62,6 +88,10 @@ ${txt}
 
   }
 
+}
+
+function percentDecode(str: string) {
+  return str.replace('%25', '%');
 }
 
 function getRelativePath() {
