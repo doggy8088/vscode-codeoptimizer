@@ -1,0 +1,81 @@
+{
+  "name": "codeoptimizer",
+  "displayName": "程式碼優化大師",
+  "description": "這個擴充套件會透過 ChatGPT 幫你分析程式碼品質並提供優化建議",
+  "version": "0.1.1",
+  "preview": true,
+  "publisher": "doggy8088",
+  "icon": "icon.webp",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/doggy8088/vscode-codeoptimizer"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "license": "MIT",
+  "galleryBanner": {
+    "color": "#000000",
+    "theme": "dark"
+  },
+  "keywords": [
+    "ChatGPT",
+    "中文"
+  ],
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "main": "./out/main",
+  "contributes": {
+    "commands": [
+      {
+        "command": "codeoptimizer.add_selection",
+        "title": "CodeOptimizer: 程式碼優化大師 (選取範圍)"
+      },
+      {
+        "command": "codeoptimizer.add_wholefile",
+        "title": "CodeOptimizer: 程式碼優化大師 (整份文件)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "codeoptimizer.add_wholefile",
+          "when": "!editorHasSelection",
+          "group": "codeoptimizer"
+        },
+        {
+          "command": "codeoptimizer.add_selection",
+          "when": "editorHasSelection",
+          "group": "codeoptimizer"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:publish": "vsce publish",
+    "vscode:prepublish": "rimraf --glob out/* && npm run esbuild-base -- --minify",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+    "esbuild": "npm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
+    "test-compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/glob": "^7.1.1",
+    "@types/node": "^12.12.21",
+    "@types/vscode": "^1.41.0",
+    "esbuild": "^0.19.5",
+    "glob": "^7.1.5",
+    "rimraf": "^5.0.5",
+    "tslint": "^5.20.1",
+    "typescript": "^3.7.4",
+    "vscode-test": "^1.2.2"
+  },
+  "dependencies": {
+  }
+}
