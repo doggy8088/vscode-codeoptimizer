@@ -57,7 +57,7 @@ ${txt}
     logger.appendLine(`promptHash: ${promptHash}`);
     logger.appendLine('-------------------');
 
-    const baseUrl = 'https://chat.openai.com/g/g-UEZYckKpa-cheng-shi-ma-you-hua-da-shi';
+    const baseUrl = 'https://chat.openai.com/g/g-UEZYckKpa';
 
     let promptChatGPTURL = `${baseUrl}#autoSubmit=1&prompt=${promptTextEncoded}`;
 
